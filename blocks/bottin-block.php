@@ -51,6 +51,10 @@ function bottin_block_block_init()
 		filemtime("$dir/$style_css")
 	);
 
+	function mon_render()
+	{
+		return '<div for="text-dyn"><p>bonjour pour de vrai</p></div>';
+	}
 
 	register_block_type('bottin-block-plugin/bottin-block', array(
 		'editor_script' => 'bottin-block-block-editor',
@@ -60,8 +64,10 @@ function bottin_block_block_init()
 			'bottinSociete' => ['type' => 'string'],
 			'ficheObj' => ['type' => 'object']
 		],
+		'render_callback' => 'mon_render'
 	));
 }
+
 
 
 
