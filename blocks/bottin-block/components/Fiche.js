@@ -2,11 +2,12 @@ const { useState, useEffect } = wp.element;
 import axios from "axios";
 import DisplayFilteredSearch from "./DisplayFilteredSearch";
 
-function Fiche({ bottinSociete, setAttributes }) {
+function Fiche({ bottinSociete, ficheObj, setAttributes }) {
   const [allFichesSocieteId, setAllFichesSocieteId] = useState([]);
-  const [ficheObject, setFicheObject] = useState({});
   const [searchInput, setSearchInput] = useState(null);
   const [filteredSociete, setFilteredSociete] = useState([]);
+
+  console.log(searchInput);
 
   const getFichesSocieteId = () => {
     axios
@@ -28,13 +29,13 @@ function Fiche({ bottinSociete, setAttributes }) {
       (elem) => elem.societe.toLowerCase() == bottinSociete.toLowerCase()
     );
     matrouvaille ? setSearchInput(matrouvaille) : setSearchInput(null);
-  }, [bottinSociete]);
+  }, [bottinSociete, allFichesSocieteId]);
 
   useEffect(() => {
     axios
       .get(`https://new.marche.be/wp-json/ca/v1/bottin/${searchInput?.id}`)
       .then((res) => {
-        setFicheObject(res.data);
+        setAttributes({ ficheObj: res.data });
         console.log(res.data);
       })
       .catch((err) => console.log(err.message));
@@ -83,12 +84,12 @@ function Fiche({ bottinSociete, setAttributes }) {
   } else {
     return (
       <div>
-        <p>Societe: {ficheObject.societe}</p>
-        <p>Email: {ficheObject.email}</p>
-        <p>Telephone: {ficheObject.telephone}</p>
+        <p>Societe: {ficheObj?.societe}</p>
+        <p>Email: {ficheObj?.email}</p>
+        <p>Telephone: {ficheObj?.telephone}</p>
         <p>
           Adresse:
-          {`${ficheObject.localite} ${ficheObject.rue} ${ficheObject.numero}`}
+          {`${ficheObj?.localite} ${ficheObj?.rue} ${ficheObj?.numero}`}
         </p>
       </div>
     );

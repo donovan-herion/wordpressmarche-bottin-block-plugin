@@ -11,7 +11,7 @@ function DisplayFilteredSearch({
     setAttributes({
       bottinSociete: societe,
     });
-    console.log(bottinSociete);
+    console.log("bottinsociete", bottinSociete);
   };
 
   return (

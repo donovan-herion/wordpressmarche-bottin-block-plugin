@@ -30,7 +30,7 @@ function bottin_block_block_init()
 			'wp-i18n',
 			'wp-element',
 			'wp-editor',
-			'wp-components'
+			'wp-components',
 		),
 		filemtime("$dir/$index_js")
 	);
@@ -51,24 +51,18 @@ function bottin_block_block_init()
 		filemtime("$dir/$style_css")
 	);
 
+
 	register_block_type('bottin-block-plugin/bottin-block', array(
 		'editor_script' => 'bottin-block-block-editor',
 		'editor_style'  => 'bottin-block-block-editor',
 		'style'         => 'bottin-block-block',
 		'attributes'	=> 	[
-			'bottinSociete' => ['type' => 'string']
+			'bottinSociete' => ['type' => 'string'],
+			'ficheObj' => ['type' => 'object']
 		],
-		'render_callback' => 'bottin_block_render'
 	));
 }
 
-function bottin_block_render(array $attributes)
-{
-	return <<<HTML
-	<div>
-	completer ici
-	</div>
-HTML;
-}
+
 
 add_action('init', 'bottin_block_block_init');

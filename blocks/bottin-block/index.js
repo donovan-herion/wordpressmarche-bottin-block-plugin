@@ -30,6 +30,8 @@ registerBlockType("bottin-block-plugin/bottin-block", {
       <Fiche
         className={className}
         bottinSociete={attributes.bottinSociete}
+        // ficheObject={attributes.ficheObject}
+        ficheObj={attributes.ficheObj}
         setAttributes={setAttributes}
       />,
     ];
