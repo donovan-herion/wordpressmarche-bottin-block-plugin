@@ -51,9 +51,19 @@ function bottin_block_block_init()
 		filemtime("$dir/$style_css")
 	);
 
-	function mon_render()
+	function block_dynamic_render_cb($att)
 	{
-		return '<div for="text-dyn"><p>bonjour pour de vrai</p></div>';
+		$bottin_societe = $att['bottinSociete'];
+
+		// var_dump($att['ficheObj']);
+
+		$email = $att['ficheObj']['email'];
+		$fax = $att['ficheObj']['fax'];
+		$gsm = $att['ficheObj']['gsm'];
+
+		$html = "<h1>$bottin_societe</h1> <p>$email</p> <p>$fax</p> <p>$gsm</p>";
+
+		return $html;
 	}
 
 	register_block_type('bottin-block-plugin/bottin-block', array(
@@ -64,7 +74,7 @@ function bottin_block_block_init()
 			'bottinSociete' => ['type' => 'string'],
 			'ficheObj' => ['type' => 'object']
 		],
-		'render_callback' => 'mon_render'
+		'render_callback' => 'block_dynamic_render_cb'
 	));
 }
 

@@ -26,7 +26,7 @@ function Fiche({ bottinSociete, ficheObj, setAttributes }) {
 
   useEffect(() => {
     let matrouvaille = allFichesSocieteId.find(
-      (elem) => elem.societe.toLowerCase() == bottinSociete.toLowerCase()
+      (elem) => elem.societe.toLowerCase() == bottinSociete?.toLowerCase()
     );
     matrouvaille ? setSearchInput(matrouvaille) : setSearchInput(null);
   }, [bottinSociete, allFichesSocieteId]);
