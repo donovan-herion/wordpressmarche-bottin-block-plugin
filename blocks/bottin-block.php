@@ -13,6 +13,9 @@
  *
  * @see https://wordpress.org/gutenberg/handbook/designers-developers/developers/tutorials/block-tutorial/applying-styles-with-stylesheets/
  */
+
+use AcMarche\Bottin\Repository\BottinRepository;
+
 function bottin_block_block_init()
 {
 	// Skip block registration if Gutenberg is not enabled/merged.
@@ -53,15 +56,38 @@ function bottin_block_block_init()
 
 	function block_dynamic_render_cb($att)
 	{
-		$bottin_societe = $att['bottinSociete'];
+		$bottinRepository = new BottinRepository();
+		$fiches           = $bottinRepository->getFicheById($att['ficheObj']['id']);
+		$societe = $fiches->societe;
+		$email = $fiches->email;
+		$telephone = $fiches->telephone;
+		$localite = $fiches->localite;
+		$rue = $fiches->rue;
+		$numero = $fiches->numero;
+		$website = $fiches->website;
+		$slug_fiche = $fiches->slug;
+		$current_blog_id = get_current_blog_id();
+		$site_url = get_blog_details($current_blog_id)->path;
+		$linkToFiche = "https://new.marche.be" . $site_url . "/bottin/fiche/" . $slug_fiche;
 
-		// var_dump($att['ficheObj']);
+		// var_dump($fiches);
 
-		$email = $att['ficheObj']['email'];
-		$fax = $att['ficheObj']['fax'];
-		$gsm = $att['ficheObj']['gsm'];
 
-		$html = "<h1>$bottin_societe</h1> <p>$email</p> <p>$fax</p> <p>$gsm</p>";
+		$html = " 
+		<h2>$societe</h2>
+        <p>$email</p>
+        <p>$telephone</p>
+        <p>$localite</p>
+        <p>$rue</p>
+        <p>$numero</p>
+        <p>
+          <a href='$website' target='_blank'>Site Web</a>
+        </p>
+        <p>
+		  <a href='$linkToFiche' target='_blank'>
+            Voir la fiche complete
+          </a>
+        </p>";
 
 		return $html;
 	}
@@ -72,7 +98,8 @@ function bottin_block_block_init()
 		'style'         => 'bottin-block-block',
 		'attributes'	=> 	[
 			'bottinSociete' => ['type' => 'string'],
-			'ficheObj' => ['type' => 'object']
+			'ficheObj' => ['type' => 'object'],
+			'fullVersionChecked' => ['type' => 'boolean']
 		],
 		'render_callback' => 'block_dynamic_render_cb'
 	));

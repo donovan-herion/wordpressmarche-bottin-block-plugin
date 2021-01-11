@@ -2,12 +2,15 @@ const { useState, useEffect } = wp.element;
 import axios from "axios";
 import DisplayFilteredSearch from "./DisplayFilteredSearch";
 
-function Fiche({ bottinSociete, ficheObj, setAttributes }) {
+function Fiche({ bottinSociete, ficheObj, fullVersionChecked, setAttributes }) {
   const [allFichesSocieteId, setAllFichesSocieteId] = useState([]);
   const [searchInput, setSearchInput] = useState(null);
   const [filteredSociete, setFilteredSociete] = useState([]);
+  const [linkToFiche, setLinkToFiche] = useState(null);
 
   console.log(searchInput);
+
+  console.log(ficheObj, "ici mon objet");
 
   const getFichesSocieteId = () => {
     axios
@@ -53,6 +56,13 @@ function Fiche({ bottinSociete, ficheObj, setAttributes }) {
     }
   }, [bottinSociete, allFichesSocieteId]);
 
+  useEffect(() => {
+    let windowLocationHref = window.location.href;
+    let prefixUrl = windowLocationHref.split("wp")[0];
+    let ficheSlug = ficheObj.slug;
+    setLinkToFiche(`${prefixUrl}/bottin/fiche/${ficheSlug}`);
+  }, []);
+
   if (!bottinSociete) {
     return (
       <div
@@ -81,19 +91,51 @@ function Fiche({ bottinSociete, ficheObj, setAttributes }) {
         bottinSociete={bottinSociete}
       />
     );
+    // } else if (!fullVersionChecked) {
   } else {
+    //TODO JF ACTIVER LA LIGNE CI DESSUS POUR ACTIVER LE RENDU CONDITIONNEL SUR BASE DE LA CHECKBOX
     return (
       <div>
-        <p>Societe: {ficheObj?.societe}</p>
-        <p>Email: {ficheObj?.email}</p>
-        <p>Telephone: {ficheObj?.telephone}</p>
+        <h2>{ficheObj?.societe}</h2>
+        <p>{ficheObj?.email}</p>
+        <p>{ficheObj?.telephone}</p>
+        <p>{`${ficheObj?.localite} ${ficheObj?.rue} ${ficheObj?.numero}`}</p>
         <p>
-          Adresse:
-          {`${ficheObj?.localite} ${ficheObj?.rue} ${ficheObj?.numero}`}
+          <a href={ficheObj?.website} target="_blank">
+            {ficheObj?.website}
+          </a>
+        </p>
+        <p>
+          <a href={linkToFiche} target="_blank">
+            Plus d'information
+          </a>
         </p>
       </div>
     );
   }
+  // } else {
+  // return (
+  // <div>
+  {
+    /* <p>{fullVersionChecked ? "true" : "false or undefined"}</p> */
+  }
+  {
+    /* TODO:JF  */
+  }
+  {
+    /* Ici entrer ce qui devrait s'afficher dans la partie administration du block bottin  */
+  }
+  {
+    /* apres avoir selectionne une fiche particuliere */
+  }
+
+  {
+    /* !! Il faut aussi adapter index.js pour decommenter la checkbox responsable du changement
+        d'etat de fullVersionChecked */
+  }
+  // </div>
+  // );
+  // }
 }
 
 export default Fiche;
